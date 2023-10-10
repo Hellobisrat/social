@@ -7,8 +7,8 @@ const morgan = require('morgan')
 const userRoute = require("./routes/users")
 const authRoute = require("./routes/auth")
 
-const db =('../connection/connection.js')
-dotenv.config()
+const db =require('./config/connection')
+
 
 
 app.use(express.json());
@@ -23,6 +23,9 @@ app.get("/",(req,res)=>{
 app.get("/users",(req,res)=>{
   res.send('welcome to users page')
  })
-app.listen(3004,()=>{
+
+ db.once('open',()=>{app.listen(3004,()=>{
   console.log('Back server is running')
-})
+})})
+
+
