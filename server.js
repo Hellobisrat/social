@@ -13,7 +13,7 @@ const db =require('./config/connection')
 
 
 app.use(express.json());
-app.use(morgan('common'))
+//app.use(morgan('common'))
 app.use('/api/user',userRoute)
 app.use('/api/auth',authRoute)
 app.use('/api/post',postRoute)
