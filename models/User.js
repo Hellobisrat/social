@@ -1,7 +1,10 @@
 const { timeStamp } = require('console');
-const mongoose = require('mongoose')
 
-const UserSchema  = new mongoose.Schema({
+const { Schema, model } = require('mongoose');
+
+
+const UserSchema  = new Schema({
+
   username:{
     type:String,
     require:true,
@@ -61,5 +64,8 @@ const UserSchema  = new mongoose.Schema({
 {timestamps:true}
 );
 
-module.exports = mongoose.model('User',UserSchema)
+const User = model('User', UserSchema);
+
+module.exports = User;
+
 
