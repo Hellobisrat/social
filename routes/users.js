@@ -41,7 +41,7 @@ router.delete('/:id', async(req,res)=>{
  return res.status(403).json('you can not delete')
 }})
 
-// get a user
+// get a user by id
 router.get('/:id', async(req,res)=>{
   try {
     const user = await User.findById(req.params.id)
@@ -75,14 +75,14 @@ router.put('/:userId/friends/:friendId', async(req,res)=>{
   }
 
 )
-//unfollow users
+//remove friend 
 router.put('/:userId/friends/:friendId', async(req,res)=>{
   if(req.body.userId !== req.params.id){
     try {
       const user = await User.findById(req.params.id)
-      if(!user.followe.includes(req.body.userId)){
+      if(!user.friends.includes(req.params.userId)){
         await user.updateOne({$pull:{friends:req.params.friendId}})
-        res.status.json('user has been unfriend')
+        res.status.json(user)
       }
       else{
         res.status(401).json('you already unfriend')

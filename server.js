@@ -13,18 +13,11 @@ const db =require('./config/connection')
 
 
 app.use(express.json());
-//app.use(morgan('common'))
+
 app.use('/api/user',userRoute)
-app.use('/api/auth',authRoute)
 app.use('/api/thought',thoughtRoute)
 
-app.get("/",(req,res)=>{
- res.send('welcome to home page')
-})
 
-app.get("/users",(req,res)=>{
-  res.send('welcome to users page')
- })
 
  db.once('open',()=>{app.listen(3004,()=>{
   console.log('Back server is running')

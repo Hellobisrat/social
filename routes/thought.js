@@ -10,6 +10,13 @@ router.get('/', async(req,res)=>{
   const thought =  await Thought.find()
   res.send(post)
 })
+
+
+// get a thought by id
+
+router.get('/:id', async(req, res)=>{
+  const thought = await Thought.findById(req.params.id)
+})
 // create a thought
 
 router.post('/', async(req,res)=>{
