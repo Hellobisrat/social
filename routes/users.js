@@ -5,7 +5,14 @@ const bcrypt = require('bcrypt')
 //get user
 router.get('/', async(req,res)=>{
   const user =  await User.find()
-  res.send(user)
+  res.status(200).json(user)
+})
+
+// create user
+
+router.put('/',async(req,res)=>{
+  const user = await User.create(req.body)
+  res.status(200).json(user)
 })
 
 // update user
