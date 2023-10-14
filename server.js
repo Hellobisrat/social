@@ -6,7 +6,7 @@ const dotenv = require('dotenv');
 const morgan = require('morgan')
 const userRoute = require("./routes/users")
 const authRoute = require("./routes/auth")
-const postRoute = require("./routes/post")
+const thoughtRoute = require("./routes/thought")
 
 const db =require('./config/connection')
 
@@ -16,7 +16,7 @@ app.use(express.json());
 //app.use(morgan('common'))
 app.use('/api/user',userRoute)
 app.use('/api/auth',authRoute)
-app.use('/api/post',postRoute)
+app.use('/api/thought',thoughtRoute)
 
 app.get("/",(req,res)=>{
  res.send('welcome to home page')

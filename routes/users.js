@@ -2,6 +2,7 @@ const router = require('express').Router();
 const User = require('../models/User')
 const bcrypt = require('bcrypt')
 
+//get user
 router.get('/', async(req,res)=>{
   const user =  await User.find()
   res.send(user)
@@ -44,8 +45,8 @@ router.delete('/:id', async(req,res)=>{
 router.get('/:id', async(req,res)=>{
   try {
     const user = await User.findById(req.params.id)
-    const {password,updatedAt, ...other} =user._doc
-    res.status(200).json(other)
+    
+    res.status(200).json(user)
 
   } catch (error) {
     
@@ -53,42 +54,38 @@ router.get('/:id', async(req,res)=>{
   }
 })
 
-// follow a user 
-router.put('/:id/follow', async(req,res)=>{
-  if(req.body.userId !== req.params.id){
+// adding friends
+router.put('/:userId/friends/:friendId', async(req,res)=>{
+
     try {
-      const user = await User.findById(req.params.id)
-      const currentUser = await User.findById(req.body.userId)
-      if(!user.followers.includes(req.body.userId)){
-        await user.updateOne({$push:{followers:req.body.userId}})
-        await currentUser.updateOne({$push:{following: req.body.params.id}})
-        res.status.json('user has been followed')
+      const user = await User.findById(req.params.userId)
+      if(!user.friends.includes(req.body.userId)){
+        await user.updateOne({$push:{friends:req.params.friendId}})
+        
+        
+        res.status.json(user)
       }
       else{
-        res.status(401).json('you already follow')
+        res.status(401).json('you already friend')
       }
     } catch (error) {
       res.status(500).json(error)
     }
 
   }
-  else{
-    res.status(403).json('you can not follow yourself')
-  }
-})
+
+)
 //unfollow users
-router.put('/:id/unfollow', async(req,res)=>{
+router.put('/:userId/friends/:friendId', async(req,res)=>{
   if(req.body.userId !== req.params.id){
     try {
       const user = await User.findById(req.params.id)
-      const currentUser = await User.findById(req.body.userId)
-      if(!user.followers.includes(req.body.userId)){
-        await user.updateOne({$pull:{followers:req.body.userId}})
-        await currentUser.updateOne({$pull:{following: req.body.params.id}})
-        res.status.json('user has been unfollowed')
+      if(!user.followe.includes(req.body.userId)){
+        await user.updateOne({$pull:{friends:req.params.friendId}})
+        res.status.json('user has been unfriend')
       }
       else{
-        res.status(401).json('you already unfollow')
+        res.status(401).json('you already unfriend')
       }
     } catch (error) {
       res.status(500).json(error)
@@ -96,7 +93,7 @@ router.put('/:id/unfollow', async(req,res)=>{
 
   }
   else{
-    res.status(403).json('you can not unfollow yourself')
+    res.status(403).json('you can not unfriend yourself')
   }
 })
 module.exports = router
