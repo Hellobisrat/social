@@ -5,7 +5,6 @@ const mongoose = require('mongoose')
 const dotenv = require('dotenv');
 const morgan = require('morgan')
 const userRoute = require("./routes/users")
-const authRoute = require("./routes/auth")
 const thoughtRoute = require("./routes/thought")
 
 const db =require('./config/connection')
