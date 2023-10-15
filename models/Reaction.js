@@ -1,21 +1,22 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const ReactionSchema = new mongoose.Schema ({
+const ReactionSchema = new mongoose.Schema({
   reactionId:{
-    Type:String,
-    default: `_Id`
+    type: mongoose.Schema.Types.ObjectId,
+   
+    default: () => new mongoose.Types.ObjectId(),
   },
   reactionBody:{
-    Type:String,
+    type:String,
     require:true,
     max:280
   },
   username:{
-    Type:String,
+    type:String,
     require:true
   },
   createdAt:{
-    Type:Date,
+    type:Date,
     timeStamp:true
 
   }
