@@ -64,16 +64,12 @@ router.get('/:id', async(req,res)=>{
 router.post('/:userId/friends/:friendId', async(req,res)=>{
 
     try {
-      const user = await User.findById(req.params.userId)
-      if(!user.friends.includes(req.body.userId)){
-        await user.updateOne({$push:{friends:req.params.friendId}})
-        
-        
-        res.status.json(user)
-      }
-      else{
-        res.status(401).json('you already friend')
-      }
+      const user = await User.findOneAndUpdate(
+        {_id: req.params.userId},
+        {$addToSet:{friends:req.params.friendId}},
+         {new: true})
+
+      res.status(200).json(user)
     } catch (error) {
       res.status(500).json(error)
     }
@@ -85,7 +81,7 @@ router.post('/:userId/friends/:friendId', async(req,res)=>{
 router.delete('/:userId/friends/:friendId', async(req,res)=>{
 
     try {
-      const user = await User.findById(req.params.id)
+       const user = await User.findById(req.params.id)
     {
         await user.updateOne({$pull:{friends:req.params.friendId}})
         res.status.json(user)
@@ -94,6 +90,7 @@ router.delete('/:userId/friends/:friendId', async(req,res)=>{
     } catch (error) {
       res.status(500).json(error)
     }
+    const user = await User.findOneAndDelete({})
 
   }
   
