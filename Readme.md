@@ -7,4 +7,9 @@
 
 # it has two models Thought and User
 
-# 
+# one schema Reaction
+
+
+
+
+
