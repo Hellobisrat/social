@@ -83,12 +83,12 @@ router.delete('/:userId/friends/:friendId', async(req,res)=>{
 
     try {
       
-      const user = await User.findOneAndUpdate(
-        {_id: req.params.userId},
-        {$pull:{friends:req.params.friendId}},
-         )
       
-        res.status.json(user)
+         const user =  await User.findOneAndUpdate({_id:req.params.userId},
+          {$pull:{friends:{friendId:req.params.id}}},
+          {new:true})
+         res.status(200).json(user)
+      
       }
       
      catch (error) {

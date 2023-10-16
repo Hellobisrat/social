@@ -85,16 +85,15 @@ router.post('/:thoughtId/reactions', async(req,res)=>{
      { $addToSet: { reactions: req.body } },
      { new: true }
     );
-  
+    res.status(200).json(thought)
     if (!thought) {
      return res.status(404).json({ message: 'No thought with this id!' });
     }} catch (error) {
       console.log(error)
       res.status(500).json(error)
      }
-  // const thought =  await Thought.findOneAndUpdate({_id:req.params.thoughtId},
-  //                              {$push:{reactions:req.body}})
-  //       res.status(200).json(thought)
+    
+  
 })
 
 
