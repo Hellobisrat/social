@@ -1,107 +1,98 @@
-const router = require('express').Router();
-const Thought = require('../models/Thought')
-const User = require('../models/User')
-
-
-
+const router = require("express").Router();
+const Thought = require("../models/Thought");
+const User = require("../models/User");
 
 // get a thought
-router.get('/', async(req,res)=>{
-  const thought =  await Thought.find()
-  res.send(thought)
-})
-
+router.get("/", async (req, res) => {
+  const thought = await Thought.find();
+  res.send(thought);
+});
 
 // get a thought by id
 
-router.get('/:id', async(req, res)=>{
+router.get("/:id", async (req, res) => {
   try {
-    const thought = await Thought.findById(req.params.id)
-    res.status(200).json(thought)
+    const thought = await Thought.findById(req.params.id);
+    res.status(200).json(thought);
   } catch (error) {
-    res.status(500).json(error)
+    res.status(500).json(error);
   }
- 
-})
+});
 // create a thought
 
-router.post('/', async(req,res)=>{
- 
+router.post("/", async (req, res) => {
   try {
-    const newPost=   await Thought.create(req.body)
-      const user = await User.findOneAndUpdate(
-        {_id: req.body.userId},
-        {$addToSet:{thoughts:newPost._id}},
-         {new: true})
+    const newPost = await Thought.create(req.body);
+    const user = await User.findOneAndUpdate(
+      { _id: req.body.userId },
+      { $addToSet: { thoughts: newPost._id } },
+      { new: true }
+    );
 
-      res.status(200).json(newPost)
+    res.status(200).json(newPost);
   } catch (error) {
-    res.status(500).json(error)
+    res.status(500).json(error);
   }
-})
+});
 
 //update a thought
 
-router.put('/:id', async(req,res) =>{
+router.put("/:id", async (req, res) => {
   try {
-    
-    const post = await Thought.findById(req.params.id)
+    const post = await Thought.findById(req.params.id);
 
-   const updatedThought =  await Thought.updateOne({$set:req.body})
-      res.status(200).json(updatedThought)
-   
-    
+    const updatedThought = await Thought.updateOne({ $set: req.body });
+    res.status(200).json(updatedThought);
   } catch (error) {
-    console.log(error)
-    res.status(500).json(error)
+    console.log(error);
+    res.status(500).json(error);
   }
- 
- 
-})
+});
 
 // delete a thought
 
-router.delete('/:id', async(req,res) =>{
+router.delete("/:id", async (req, res) => {
   try {
-    
-    const thought = await Thought.findOneAndRemove({_id:req.params.id})
-    await User.findOneAndUpdate({thoughts:  req.params.id},{$pull:{thoughts:req.params.id}})
-     res.status(200).json(thought)
-   
+    const thought = await Thought.findOneAndRemove({ _id: req.params.id });
+    await User.findOneAndUpdate(
+      { thoughts: req.params.id },
+      { $pull: { thoughts: req.params.id } },
+      {new:true}
+    );
+    res.status(200).json(thought);
   } catch (error) {
-    console.log(error)
-    res.status(500).json(error)
+    console.log(error);
+    res.status(500).json(error);
   }
- 
- 
-})
+});
 
 // create reaction
-router.post('/:thoughtId/reactions', async(req,res)=>{
+router.post("/:thoughtId/reactions", async (req, res) => {
   try {
-
     const thought = await Thought.findOneAndUpdate(
-     { _id: req.params.thoughtId },
-     { $addToSet: { reactions: req.body } },
-     { new: true }
+      { _id: req.params.thoughtId },
+      { $addToSet: { reactions: req.body } },
+      { new: true }
     );
-    res.status(200).json(thought)
+    res.status(200).json(thought);
     if (!thought) {
-     return res.status(404).json({ message: 'No thought with this id!' });
-    }} catch (error) {
-      console.log(error)
-      res.status(500).json(error)
-     }
-    
-  
-})
-
+      return res.status(404).json({ message: "No thought with this id!" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+});
 
 // delete reaction
-router.delete('/:thoughtId/reactions/:id', async(req,res)=>{
-  const thought =  await Thought.findOneAndUpdate({_id:req.params.thoughtId},
-                               {$pull:{reactions:{reactionId:req.params.id}}})
-        res.status(200).json(thought)
-})
+router.delete("/:thoughtId/reactions/:id", async (req, res) => {
+  const thought = await Thought.findOneAndUpdate(
+    { _id: req.params.thoughtId },
+    { $pull: { reactions: { reactionId: req.params.id } } },
+    { new: true }
+  );
+  console.log(thought)
+  res.status(200).json(thought);
+});
 
-module.exports = router
+module.exports = router;

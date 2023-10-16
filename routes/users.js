@@ -26,7 +26,8 @@ router.put('/:id', async(req, res)=>{
        try {
         const user = await User.findByIdAndUpdate(req.params.id,{
          $set: req.body
-        })
+        },
+        {new:true})
         res.status(200).json(user)
       }catch(err){
         return res.status(500).json(err)
@@ -82,10 +83,10 @@ router.post('/:userId/friends/:friendId', async(req,res)=>{
 router.delete('/:userId/friends/:friendId', async(req,res)=>{
 
     try {
-      
+     
       
          const user =  await User.findOneAndUpdate({_id:req.params.userId},
-          {$pull:{friends:{friendId:req.params.id}}},
+          {$pull:{friends:{friendId:req.params.friendId}}},
           {new:true})
          res.status(200).json(user)
       
